@@ -14,11 +14,21 @@ class PostagemSchema(BaseModel):
 class PostagemViewSchema(BaseModel):
     """Define como uma nova postagem a ser inserida deve ser representada"""
 
+    id: int = 1
     titulo: str = "Título do post"
     subtitulo: str = "Subtítulo"
     texto: str = "Um texto genérico vai aqui representando o conteúdo"
     data_insercao: str = ""
     curtidas: int = 0
+
+
+class PostagemAtualizacaoSchema(BaseModel):
+    """Define como uma nova postagem a ser atualizada deve ser representada"""
+
+    id: int = 1
+    titulo: str = "Título do post"
+    subtitulo: str = "Subtítulo"
+    texto: str = "Um texto genérico vai aqui representando o conteúdo"
 
 
 class PostagemBuscaSchema(BaseModel):

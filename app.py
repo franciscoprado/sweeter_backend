@@ -2,6 +2,7 @@ from flask_openapi3 import OpenAPI, Info, Tag
 from flask import redirect
 from urllib.parse import unquote
 
+from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 
 from models import Session, Postagem
@@ -32,7 +33,8 @@ def home():
 @app.post(
     "/postagem",
     tags=[postagem_tag],
-    responses={"200": PostagemViewSchema, "409": ErrorSchema, "400": ErrorSchema},
+    responses={"200": PostagemViewSchema,
+               "409": ErrorSchema, "400": ErrorSchema},
 )
 def add_postagem(form: PostagemSchema):
     """Adiciona um novo Postagem à base de dados
@@ -65,13 +67,14 @@ def add_postagem(form: PostagemSchema):
     tags=[postagem_tag],
     responses={"200": ListagemPostagensSchema, "404": ErrorSchema},
 )
-def get_produtos():
+def get_postagens():
     """Faz a busca por todos os posts cadastrados
 
     Retorna uma representação da listagem de postagens.
     """
     session = Session()
-    postagens = session.query(Postagem).all()
+    postagens = session.query(Postagem).order_by(
+        desc(Postagem.data_insercao)).all()
 
     if not postagens:
         return {"postagens": []}, 200
@@ -91,7 +94,8 @@ def get_postagem(query: PostagemBuscaPorIDSchema):
     """
     postagem_id = query.id
     session = Session()
-    postagem = session.query(Postagem).filter(Postagem.id == postagem_id).first()
+    postagem = session.query(Postagem).filter(
+        Postagem.id == postagem_id).first()
 
     if not postagem:
         error_msg = "Postagem não encontrada na base :/"
@@ -127,7 +131,7 @@ def del_postagem(query: PostagemBuscaPorIDSchema):
     tags=[postagem_tag],
     responses={"200": ListagemPostagensSchema, "404": ErrorSchema},
 )
-def busca_produto(query: PostagemBuscaSchema):
+def busca_postagem(query: PostagemBuscaSchema):
     """Faz a busca por postagens a partir de um termo.
 
     Retorna uma representação das postagens.
@@ -148,3 +152,34 @@ def busca_produto(query: PostagemBuscaSchema):
         return {"postagens": []}, 200
 
     return apresenta_postagens(postagens), 200
+
+
+@app.put(
+    "/postagem",
+    tags=[postagem_tag],
+    responses={"200": PostagemViewSchema,
+               "409": ErrorSchema, "400": ErrorSchema},
+)
+def update_postagem(form: PostagemAtualizacaoSchema):
+    """Atualiza uma postagem na base de dados
+
+    Retorna uma representação dos postagem.
+    """
+    dados = {"titulo": form.titulo,
+             "subtitulo": form.subtitulo, "texto": form.texto}
+
+    try:
+        session = Session()
+        session.query(Postagem).filter(Postagem.id == form.id).update(dados)
+        session.commit()
+        postagem = session.query(Postagem).filter(
+            Postagem.id == form.id).first()
+        return apresenta_postagem(postagem), 200
+
+    except IntegrityError as e:
+        error_msg = "Postagem de mesmo nome já salvo na base :/"
+        return {"mensagem": error_msg}, 409
+
+    except Exception as e:
+        error_msg = "Não foi possível salvar novo item :/"
+        return {"mensagem": error_msg}, 400
