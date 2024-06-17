@@ -6,13 +6,13 @@ from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 
 from models import Session, Postagem
-from logger import logger
 from schemas import *
 from flask_cors import CORS
 
 info = Info(title="Minha API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
+resultados_por_pagina = 10
 
 # definindo tags
 home_tag = Tag(
@@ -67,14 +67,16 @@ def add_postagem(form: PostagemSchema):
     tags=[postagem_tag],
     responses={"200": ListagemPostagensSchema, "404": ErrorSchema},
 )
-def get_postagens():
+def get_postagens(query: PostagensPagina = 1):
     """Faz a busca por todos os posts cadastrados
 
     Retorna uma representação da listagem de postagens.
     """
+
+    pagina = query.pagina - 1
     session = Session()
     postagens = session.query(Postagem).order_by(
-        desc(Postagem.data_insercao)).all()
+        desc(Postagem.data_insercao)).offset(resultados_por_pagina * pagina).limit(resultados_por_pagina).all()
 
     if not postagens:
         return {"postagens": []}, 200
@@ -137,6 +139,7 @@ def busca_postagem(query: PostagemBuscaSchema):
     Retorna uma representação das postagens.
     """
     termo = unquote(query.termo).strip()
+    pagina = query.pagina - 1
     session = Session()
     postagens = (
         session.query(Postagem)
@@ -145,7 +148,7 @@ def busca_postagem(query: PostagemBuscaSchema):
             | Postagem.subtitulo.ilike(f"%{termo}%")
             | Postagem.texto.ilike(f"%{termo}%")
         )
-        .all()
+        .offset(resultados_por_pagina * pagina).limit(resultados_por_pagina).all()
     )
 
     if not postagens:
@@ -174,6 +177,34 @@ def update_postagem(form: PostagemAtualizacaoSchema):
         session.commit()
         postagem = session.query(Postagem).filter(
             Postagem.id == form.id).first()
+        return apresenta_postagem(postagem), 200
+
+    except IntegrityError as e:
+        error_msg = "Postagem de mesmo nome já salvo na base :/"
+        return {"mensagem": error_msg}, 409
+
+    except Exception as e:
+        error_msg = "Não foi possível salvar novo item :/"
+        return {"mensagem": error_msg}, 400
+
+
+@app.put(
+    "/curtir",
+    tags=[postagem_tag],
+    responses={"200": PostagemViewSchema,
+               "409": ErrorSchema, "400": ErrorSchema},
+)
+def curtir(form: PostagemAtualizacaoSchema):
+    """Adiciona uma curtida a uma postagem na base de dados
+
+    Retorna uma representação do total de curtidas.
+    """
+    try:
+        session = Session()
+        postagem = session.query(Postagem).filter(
+            Postagem.id == form.id).first()
+        postagem.curtidas += 1
+        session.commit()
         return apresenta_postagem(postagem), 200
 
     except IntegrityError as e:

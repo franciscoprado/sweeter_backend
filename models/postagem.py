@@ -13,7 +13,7 @@ class Postagem(Base):
     subtitulo = Column(String(250))
     texto = Column(String())
     data_insercao = Column(DateTime, default=datetime.now())
-    curtidas = Column(Integer)
+    curtidas = Column(Integer, default=0)
 
     def __init__(
         self, titulo, subtitulo, texto, data_insercao: Union[DateTime, None] = None

@@ -35,6 +35,7 @@ class PostagemBuscaSchema(BaseModel):
     """Define como deve ser a estrutura que representa a busca."""
 
     termo: str = "Lorem ipsum"
+    pagina: int = 1
 
 
 class PostagemBuscaPorIDSchema(BaseModel):
@@ -91,3 +92,10 @@ def apresenta_postagem(postagem: Postagem):
         "data_insercao": postagem.data_insercao,
         "curtidas": postagem.curtidas,
     }
+
+
+class PostagensPagina(BaseModel):
+    """Define como deve ser a estrutura que representa a paginação.
+    """
+
+    pagina: int = 1
