@@ -5,10 +5,13 @@ from urllib.parse import unquote
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 
+from helpers.postagem import encurtar_url
 from models import Session, Postagem
 from schemas import *
 from flask_cors import CORS
+from dotenv import load_dotenv
 
+load_dotenv()
 info = Info(title="Minha API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
@@ -169,7 +172,7 @@ def update_postagem(form: PostagemAtualizacaoSchema):
     Retorna uma representação dos postagem.
     """
     dados = {"titulo": form.titulo,
-             "subtitulo": form.subtitulo, "texto": form.texto}
+             "subtitulo": form.subtitulo, "texto": encurtar_url(form.texto)}
 
     try:
         session = Session()
