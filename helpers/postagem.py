@@ -3,7 +3,8 @@ import re
 from urllib import request, parse
 import os
 
-TINYURL_API = "https://api.tinyurl.com/create?api_token=" + os.getenv("TINYURL_API_KEY")
+TINYURL_API = "https://api.tinyurl.com/create?api_token=" + \
+    os.getenv("TINYURL_API_KEY")
 
 
 def encurtar_url(texto: str):
@@ -17,12 +18,16 @@ def encurtar_url(texto: str):
     lista_urls_novas = []
 
     for url in urls:
-        body = parse.urlencode({"url": url}).encode()
-        requisicao = request.Request(TINYURL_API, data=body)
-        resposta = request.urlopen(requisicao)
-        dados = json.loads(resposta.read())
-        url_encurtada = dados['data']['tiny_url']
-        lista_urls_novas.append([url, url_encurtada])
+        try:
+            if url.index('tinyurl.com'):
+                continue
+        except:
+            body = parse.urlencode({"url": url}).encode()
+            requisicao = request.Request(TINYURL_API, data=body)
+            resposta = request.urlopen(requisicao)
+            dados = json.loads(resposta.read())
+            url_encurtada = dados['data']['tiny_url']
+            lista_urls_novas.append([url, url_encurtada])
 
     for item in lista_urls_novas:
         texto = texto.replace(item[0], item[1])
