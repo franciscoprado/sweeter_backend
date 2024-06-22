@@ -6,5 +6,4 @@ pydantic
 SQLAlchemy
 SQLAlchemy-Utils
 flask-restx
-locustio
 python-dotenv

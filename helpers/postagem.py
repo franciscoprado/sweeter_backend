@@ -21,7 +21,7 @@ def encurtar_url(texto: str):
         try:
             if url.index('tinyurl.com'):
                 continue
-        except:
+        except Exception:
             body = parse.urlencode({"url": url}).encode()
             requisicao = request.Request(TINYURL_API, data=body)
             resposta = request.urlopen(requisicao)

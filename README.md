@@ -1,18 +1,27 @@
-# Minha API em REST
+# Sweeter - REST API em Flask
 
-Este pequeno projeto faz parte do material diático da Disciplina **Desenvolvimento Full Stack Avançado** 
+Projeto que fornece uma API REST para a aplicação de microbloggin chamada Sweeter, feita em Angular.
 
-O objetivo aqui é apresetar uma API emplementada seguindo o estilo REST.
+O objetivo aqui é apresetar uma API implementada seguindo o estilo REST.
 
-As principais tecnologias que serão utilizadas aqui é o:
+As principais tecnologias que serão utilizadas aqui:
  - [Flask](https://flask.palletsprojects.com/en/2.3.x/)
  - [SQLAlchemy](https://www.sqlalchemy.org/)
  - [OpenAPI3](https://swagger.io/specification/)
  - [SQLite](https://www.sqlite.org/index.html)
 
+
+## Chave da API da TinyURL
+
+Antes, é preciso adicionar a chave de API do TinyURL, serviço de encurtamento de URLs.
+Tal chave deverá ser adicionada ao arquivo `.env` presente na pasta raiz do projeto:
+
+`TINYURL_API_KEY=<sua-chave-aqui>`
+
+A chave estará presente no envio do projeto, junto com os links do GitHub dos repositórios.
+
 ---
 ### Instalação
-
 
 Será necessário ter todas as libs python listadas no `requirements.txt` instaladas.
 Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal, para poder executar os comandos descritos abaixo.
@@ -56,13 +65,13 @@ Navegue até o diretório que contém o Dockerfile e o requirements.txt no termi
 Execute **como administrador** o seguinte comando para construir a imagem Docker:
 
 ```
-$ docker build -t rest-api .
+$ docker build -t sweeter-rest-api .
 ```
 
 Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
 
 ```
-$ docker run -p 5000:5000 rest-api
+$ docker run -p 5000:5000 sweeter-rest-api
 ```
 
 Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador.
