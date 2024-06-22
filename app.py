@@ -12,7 +12,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 
 load_dotenv()
-info = Info(title="Minha API", version="1.0.0")
+info = Info(title="Sweeter", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 resultados_por_pagina = 10
