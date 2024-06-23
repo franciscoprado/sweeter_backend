@@ -7,3 +7,4 @@ SQLAlchemy
 SQLAlchemy-Utils
 flask-restx
 python-dotenv
+lorem

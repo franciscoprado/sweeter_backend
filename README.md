@@ -20,6 +20,16 @@ Tal chave deverá ser adicionada ao arquivo `.env` presente na pasta raiz do pro
 
 A chave estará presente no envio do projeto, junto com os links do GitHub dos repositórios.
 
+## Carregar massa de dados de testes (seed)
+
+É possível usar uma massa de dados para pré-visualizar um conteúdo na aplicação. Para isso, é preciso executar o comando a seguir:
+
+```
+python -m seed
+```
+
+O comando deverá ser executado de dentro do ambiente virtual, caso esteja sendo usado.
+
 ---
 ### Instalação
 
