@@ -5,3 +5,4 @@
 /models/__pycache__/*
 /schemas/__pycache__/*
 /helpers/__pycache__/*
+.env

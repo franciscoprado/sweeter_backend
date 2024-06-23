@@ -12,6 +12,11 @@ As principais tecnologias que serão utilizadas aqui:
  - [OpenAPI3](https://swagger.io/specification/)
  - [SQLite](https://www.sqlite.org/index.html)
 
+## Arquivo .env
+
+É preciso criar um arquivo contendo as variáveis usadas na aplicação.
+
+Copie o arquivo `.env.example` presente na raiz do projeto, cole ele no mesmo lugar e renomeie para `.env`, removendo o .example do final.
 
 ## Chave da API da TinyURL
 
