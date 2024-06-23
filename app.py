@@ -39,7 +39,7 @@ def home():
     responses={"200": PostagemViewSchema,
                "409": ErrorSchema, "400": ErrorSchema},
 )
-def add_postagem(form: PostagemSchema):
+def adicionar_postagem(form: PostagemSchema):
     """Adiciona um novo Postagem à base de dados
 
     Retorna uma representação dos postagem.
@@ -70,7 +70,7 @@ def add_postagem(form: PostagemSchema):
     tags=[postagem_tag],
     responses={"200": ListagemPostagensSchema, "404": ErrorSchema},
 )
-def get_postagens(query: PostagensPagina = 1):
+def obter_postagens(query: PostagensPagina = 1):
     """Faz a busca por todos os posts cadastrados
 
     Retorna uma representação da listagem de postagens.
@@ -92,7 +92,7 @@ def get_postagens(query: PostagensPagina = 1):
     tags=[postagem_tag],
     responses={"200": PostagemViewSchema, "404": ErrorSchema},
 )
-def get_postagem(query: PostagemBuscaPorIDSchema):
+def obter_postagem(query: PostagemBuscaPorIDSchema):
     """Faz a busca por uma postagem a partir do id.
 
     Retorna uma representação das postagens.
@@ -114,7 +114,7 @@ def get_postagem(query: PostagemBuscaPorIDSchema):
     tags=[postagem_tag],
     responses={"200": PostagemDelSchema, "404": ErrorSchema},
 )
-def del_postagem(query: PostagemBuscaPorIDSchema):
+def deletar_postagem(query: PostagemBuscaPorIDSchema):
     """Deleta uma Postagem a partir do id informado
 
     Retorna uma mensagem de confirmação da remoção.
@@ -166,7 +166,7 @@ def busca_postagem(query: PostagemBuscaSchema):
     responses={"200": PostagemViewSchema,
                "409": ErrorSchema, "400": ErrorSchema},
 )
-def update_postagem(form: PostagemAtualizacaoSchema):
+def atualizar_postagem(form: PostagemAtualizacaoSchema):
     """Atualiza uma postagem na base de dados
 
     Retorna uma representação dos postagem.
