@@ -2,6 +2,8 @@
 
 Projeto que fornece uma API REST para a aplicação de microbloggin chamada Sweeter, feita em Angular.
 
+![Diagrama da aplicação Sweeter](diagrama-Sweeter.png "Diagrama da aplicação Sweeter")
+
 O objetivo aqui é apresetar uma API implementada seguindo o estilo REST.
 
 As principais tecnologias que serão utilizadas aqui:
