@@ -1,4 +1,3 @@
-# from schemas.comentario import ComentarioSchema
-# from schemas.produto import *
 from schemas.postagem import *
-from schemas.error import ErrorSchema
+from schemas.error import *
+from schemas.usuario import *
