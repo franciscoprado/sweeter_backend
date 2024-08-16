@@ -14,21 +14,24 @@ class Postagem(Base):
     texto = Column(String())
     data_insercao = Column(DateTime, default=datetime.now())
     curtidas = Column(Integer, default=0)
+    postagem_mae = Column(Integer)
 
     def __init__(
-        self, titulo, subtitulo, texto, data_insercao: Union[DateTime, None] = None
+        self, titulo, subtitulo, texto, postagem_mae = None, data_insercao: Union[DateTime, None] = None
     ):
         """Cria uma postagem
 
         Args:
-            titulo (_type_): O título da postagem.
-            subtitulo (_type_): O subtítulo da postagem.
-            texto (_type_): O texto.
+            titulo (str): O título da postagem.
+            subtitulo (str): O subtítulo da postagem.
+            texto (str): O texto.
+            postagem_mae (int): A postagem que está sendo respondida, caso seja uma resposta.
             data_insercao (Union[DateTime, None], optional): Data de inserção. Defaults to None.
         """
         self.titulo = titulo
         self.subtitulo = subtitulo
         self.texto = texto
+        self.postagem_mae = postagem_mae
 
         # se não for informada, será o data exata da inserção no banco
         if data_insercao:
@@ -45,10 +48,11 @@ class Postagem(Base):
             "texto": self.texto,
             "data_insercao": self.data_insercao,
             "curtidas": self.curtidas,
+            "postagem_mae": self.postagem_mae
         }
 
     def __repr__(self):
         """
         Retorna uma representação da Postagem em forma de texto.
         """
-        return f"Postagem(id={self.id}, titulo='{self.titulo}', subtitulo={self.subtitulo}, texto='{self.texto}')"
+        return f"Postagem(id={self.id}, titulo='{self.titulo}', subtitulo='{self.subtitulo}', texto='{self.texto}', curtidas={self.curtidas}, postagem_mae={self.postagem_mae})"

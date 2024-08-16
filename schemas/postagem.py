@@ -4,11 +4,12 @@ from models.postagem import Postagem
 
 
 class PostagemSchema(BaseModel):
-    """Define como um nova postagem a ser inserido deve ser representada"""
+    """Define como uma nova postagem a ser inserida deve ser representada"""
 
     titulo: str = "Camiseta"
     subtitulo: str = 29.99
     texto: str = "Uma camiseta confortável e estilosa"
+    postagem_mae: int = None
 
 
 class PostagemViewSchema(BaseModel):
@@ -20,6 +21,7 @@ class PostagemViewSchema(BaseModel):
     texto: str = "Um texto genérico vai aqui representando o conteúdo"
     data_insercao: str = ""
     curtidas: int = 0
+    postagem_mae: int = None
 
 
 class PostagemAtualizacaoSchema(BaseModel):
@@ -66,6 +68,7 @@ def apresenta_postagens(postagens: List[Postagem]):
                 "texto": postagem.texto,
                 "data_insercao": postagem.data_insercao,
                 "curtidas": postagem.curtidas,
+                "postagem_mae": postagem.postagem_mae,
             }
         )
 
@@ -91,6 +94,7 @@ def apresenta_postagem(postagem: Postagem):
         "texto": postagem.texto,
         "data_insercao": postagem.data_insercao,
         "curtidas": postagem.curtidas,
+        "postagem_mae": postagem.postagem_mae,
     }
 
 

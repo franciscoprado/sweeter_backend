@@ -65,6 +65,7 @@ def adicionar_postagem(form: PostagemSchema):
         titulo=form.titulo.strip(),
         subtitulo=form.subtitulo.strip(),
         texto=form.texto.strip(),
+        postagem_mae=form.postagem_mae
     )
 
     try:
@@ -123,6 +124,9 @@ def obter_postagem(query: PostagemBuscaPorIDSchema):
     session = Session()
     postagem = session.query(Postagem).filter(
         Postagem.id == postagem_id).first()
+    respostas = session.query(Postagem).filter(
+        Postagem.postagem_mae == postagem_id).order_by(
+        desc(Postagem.data_insercao)).count()
 
     if not postagem:
         error_msg = "Postagem não encontrada na base :/"
@@ -270,3 +274,23 @@ def login(form: LoginSchema):
 
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
+
+
+@app.get(
+    "/respostas",
+    tags=[postagem_tag],
+    responses={"200": ListagemPostagensSchema, "404": ErrorSchema},
+)
+def obter_respostas(query: PostagemBuscaPorIDSchema):
+    """Faz a busca por todos os posts de respostas a um determinado postagem
+
+    Retorna uma representação da listagem de postagens.
+    """
+    session = Session()
+    postagens = session.query(Postagem).filter(Postagem.postagem_mae == query.id).order_by(
+        desc(Postagem.data_insercao)).all()
+
+    if not postagens:
+        return {"postagens": []}, 200
+
+    return apresenta_postagens(postagens), 200
